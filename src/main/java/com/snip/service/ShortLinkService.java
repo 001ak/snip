@@ -56,4 +56,25 @@ public class ShortLinkService {
     public void deleteShortLink(Long id) {
         shortLinkRepository.deleteById(id);
     }
+
+    /**
+     * Enum for sort fields.
+     */
+    public enum SortField {
+        ID,
+        URL,
+        CREATED_AT
+    }
+
+    /**
+     * Sorts short links based on the specified sort field.
+     * @param sortField the field to sort by
+     * @param ascending whether to sort in ascending order
+     * @return the sorted list of short links
+     */
+    public Iterable<ShortLink> sortShortLinks(SortField sortField, boolean ascending) {
+        String sortBy = sortField.name().toLowerCase();
+        String direction = ascending ? "asc" : "desc";
+        return shortLinkRepository.findAllByOrderBy(sortBy + " " + direction);
+    }
 }
