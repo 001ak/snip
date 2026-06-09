@@ -3,6 +3,7 @@ package com.snip.service;
 import com.snip.entity.ShortLink;
 import com.snip.repository.ShortLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 /**
@@ -76,5 +77,18 @@ public class ShortLinkService {
         String sortBy = sortField.name().toLowerCase();
         String direction = ascending ? "asc" : "desc";
         return shortLinkRepository.findAllByOrderBy(sortBy + " " + direction);
+    }
+
+    /**
+     * Records a click for the given short link ID asynchronously.
+     * @param id the ID of the short link
+     */
+    @Async
+    public void recordClickAsync(Long id) {
+        ShortLink shortLink = getShortLinkById(id);
+        if (shortLink != null) {
+            shortLink.setTotalClicks(shortLink.getTotalClicks() + 1);
+            updateShortLink(shortLink);
+        }
     }
 }
