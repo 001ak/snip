@@ -91,4 +91,19 @@ public class ShortLinkService {
             updateShortLink(shortLink);
         }
     }
+
+    /**
+     * Updates a short link with the given ID.
+     * @param id the ID of the short link to update
+     * @param newUrl the new URL for the short link
+     * @return the updated short link, or null if not found
+     */
+    public ShortLink updateShortLink(Long id, String newUrl) {
+        ShortLink shortLink = getShortLinkById(id);
+        if (shortLink != null) {
+            shortLink.setUrl(newUrl);
+            return updateShortLink(shortLink);
+        }
+        return null;
+    }
 }
