@@ -106,4 +106,12 @@ public class ShortLinkService {
         }
         return null;
     }
+
+    /**
+     * Deletes a short link by its alias.
+     * @param alias the alias of the short link to delete
+     */
+    public void deleteShortLink(String alias) {
+        shortLinkRepository.deleteById(alias);
+    }
 }
