@@ -60,4 +60,36 @@ public class AliasGenerator {
     public String generateDefaultAlias() {
         return generateAlias(DEFAULT_ALIAS_LENGTH);
     }
+
+    /**
+     * Generates a custom base62 alias, checking if it's valid and available.
+     * 
+     * @param customAlias the custom alias to generate
+     * @param existingAliases a set of existing aliases to check for collisions
+     * @return the custom alias if it's valid and available
+     */
+    public String generateCustomAlias(String customAlias, Set<String> existingAliases) {
+        if (customAlias == null || customAlias.isEmpty()) {
+            throw new IllegalArgumentException("Custom alias cannot be null or empty");
+        }
+        for (char c : customAlias.toCharArray()) {
+            if (BASE62_CHARS.indexOf(c) == -1) {
+                throw new IllegalArgumentException("Custom alias contains invalid characters");
+            }
+        }
+        if (existingAliases.contains(customAlias)) {
+            throw new IllegalArgumentException("Custom alias is already in use");
+        }
+        return customAlias;
+    }
+
+    /**
+     * Generates a custom base62 alias, checking if it's valid and available.
+     * 
+     * @param customAlias the custom alias to generate
+     * @return the custom alias if it's valid and available
+     */
+    public String generateCustomAlias(String customAlias) {
+        return generateCustomAlias(customAlias, new HashSet<>());
+    }
 }
