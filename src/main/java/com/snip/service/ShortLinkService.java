@@ -5,6 +5,7 @@ import com.snip.repository.ShortLinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import com.snip.util.AliasGenerator;
 
 /**
  * Service class for managing short links.
@@ -13,14 +14,17 @@ import org.springframework.stereotype.Service;
 public class ShortLinkService {
 
     private final ShortLinkRepository shortLinkRepository;
+    private final AliasGenerator aliasGenerator;
 
     /**
      * Constructs a new ShortLinkService instance.
      * @param shortLinkRepository the repository for short links
+     * @param aliasGenerator the alias generator
      */
     @Autowired
-    public ShortLinkService(ShortLinkRepository shortLinkRepository) {
+    public ShortLinkService(ShortLinkRepository shortLinkRepository, AliasGenerator aliasGenerator) {
         this.shortLinkRepository = shortLinkRepository;
+        this.aliasGenerator = aliasGenerator;
     }
 
     /**
@@ -113,5 +117,17 @@ public class ShortLinkService {
      */
     public void deleteShortLink(String alias) {
         shortLinkRepository.deleteById(alias);
+    }
+
+    /**
+     * Generates a unique alias for a short link.
+     * @return the generated alias
+     */
+    public String generateAlias() {
+        String alias;
+        do {
+            alias = aliasGenerator.generateAlias();
+        } while (shortLinkRepository.existsByAlias(alias));
+        return alias;
     }
 }
