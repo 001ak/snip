@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.snip.util.AliasGenerator;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Service class for managing short links.
@@ -129,5 +132,35 @@ public class ShortLinkService {
             alias = aliasGenerator.generateAlias();
         } while (shortLinkRepository.existsByAlias(alias));
         return alias;
+    }
+
+    /**
+     * Creates a new short link with a password.
+     * @param shortLink the short link to create
+     * @param password the password for the short link
+     * @return the created short link
+     */
+    public ShortLink createShortLink(ShortLink shortLink, String password) {
+        shortLink.setPassword(hashPassword(password));
+        return createShortLink(shortLink);
+    }
+
+    /**
+     * Hashes a password using SHA-256.
+     * @param password the password to hash
+     * @return the hashed password
+     */
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
