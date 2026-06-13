@@ -163,4 +163,32 @@ public class ShortLinkService {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Verifies the password for a short link.
+     * @param id the ID of the short link
+     * @param password the password to verify
+     * @return true if the password is correct, false otherwise
+     */
+    public boolean verifyPassword(Long id, String password) {
+        ShortLink shortLink = getShortLinkById(id);
+        if (shortLink != null) {
+            return shortLink.getPassword().equals(hashPassword(password));
+        }
+        return false;
+    }
+
+    /**
+     * Verifies the password for a short link by alias.
+     * @param alias the alias of the short link
+     * @param password the password to verify
+     * @return true if the password is correct, false otherwise
+     */
+    public boolean verifyPassword(String alias, String password) {
+        ShortLink shortLink = shortLinkRepository.findByAlias(alias);
+        if (shortLink != null) {
+            return shortLink.getPassword().equals(hashPassword(password));
+        }
+        return false;
+    }
 }
