@@ -89,4 +89,16 @@ public class LinkController {
         linkService.deleteLink(id);
         return new ResponseEntity<>("Link deleted successfully", HttpStatus.OK);
     }
+
+    /**
+     * Retrieves a short link by its alias.
+     *
+     * @param alias the alias of the link to retrieve
+     * @return the retrieved link
+     */
+    @GetMapping("/{alias}")
+    public ResponseEntity<Link> getLinkByAlias(@PathVariable String alias) {
+        Link link = linkService.getLinkByAlias(alias);
+        return new ResponseEntity<>(link, HttpStatus.OK);
+    }
 }
