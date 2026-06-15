@@ -191,4 +191,17 @@ public class ShortLinkService {
         }
         return false;
     }
+
+    /**
+     * Verifies the password for a short link using the stored password hash and the provided password.
+     * @param shortLink the short link to verify
+     * @param password the password to verify
+     * @return true if the password is correct, false otherwise
+     */
+    public boolean verifyPassword(ShortLink shortLink, String password) {
+        if (shortLink != null && shortLink.getPassword() != null) {
+            return shortLink.getPassword().equals(hashPassword(password));
+        }
+        return false;
+    }
 }
