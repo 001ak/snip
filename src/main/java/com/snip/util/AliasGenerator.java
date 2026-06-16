@@ -14,6 +14,8 @@ public class AliasGenerator {
 
     private static final String BASE62_CHARS = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final int DEFAULT_ALIAS_LENGTH = 6;
+    private static final int ALIAS_MIN_CUSTOM_LENGTH = 3;
+    private static final int ALIAS_MAX_CUSTOM_LENGTH = 20;
     private static final Random random = new Random();
 
     /**
@@ -91,5 +93,25 @@ public class AliasGenerator {
      */
     public String generateCustomAlias(String customAlias) {
         return generateCustomAlias(customAlias, new HashSet<>());
+    }
+
+    /**
+     * Generates a custom base62 alias, checking if it's valid.
+     * 
+     * @param customAlias the custom alias to generate
+     * @return the custom alias if it's valid
+     */
+    public String generateCustomAliasValidation(String customAlias) {
+        if (customAlias == null || customAlias.isEmpty()) {
+            throw new IllegalArgumentException("Custom alias cannot be empty");
+        }
+        if (customAlias.length() < ALIAS_MIN_CUSTOM_LENGTH || customAlias.length() > ALIAS_MAX_CUSTOM_LENGTH) {
+            throw new IllegalArgumentException("Custom alias must be between " + ALIAS_MIN_CUSTOM_LENGTH + " and " + ALIAS_MAX_CUSTOM_LENGTH + " characters long");
+        }
+        // Check if the custom alias contains only alphanumeric characters and hyphens
+        if (!customAlias.matches("^[a-zA-Z0-9-]+$")) {
+            throw new IllegalArgumentException("Custom alias can only contain alphanumeric characters and hyphens");
+        }
+        return customAlias;
     }
 }
