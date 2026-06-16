@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import com.snip.util.AliasGenerator;
+import com.snip.util.IpHasher;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
@@ -18,16 +19,19 @@ public class ShortLinkService {
 
     private final ShortLinkRepository shortLinkRepository;
     private final AliasGenerator aliasGenerator;
+    private final IpHasher ipHasher;
 
     /**
      * Constructs a new ShortLinkService instance.
      * @param shortLinkRepository the repository for short links
      * @param aliasGenerator the alias generator
+     * @param ipHasher the ip hasher
      */
     @Autowired
-    public ShortLinkService(ShortLinkRepository shortLinkRepository, AliasGenerator aliasGenerator) {
+    public ShortLinkService(ShortLinkRepository shortLinkRepository, AliasGenerator aliasGenerator, IpHasher ipHasher) {
         this.shortLinkRepository = shortLinkRepository;
         this.aliasGenerator = aliasGenerator;
+        this.ipHasher = ipHasher;
     }
 
     /**
@@ -201,6 +205,22 @@ public class ShortLinkService {
     public boolean verifyPassword(ShortLink shortLink, String password) {
         if (shortLink != null && shortLink.getPassword() != null) {
             return shortLink.getPassword().equals(hashPassword(password));
+        }
+        return false;
+    }
+
+    /**
+     * Verifies the password for a short link using the IpHasher utility to hash the IP address.
+     * @param id the ID of the short link
+     * @param password the password to verify
+     * @param ipAddress the IP address to hash
+     * @return true if the password is correct, false otherwise
+     */
+    public boolean verifyPasswordWithIpHash(Long id, String password, String ipAddress) {
+        ShortLink shortLink = getShortLinkById(id);
+        if (shortLink != null) {
+            String ipHash = ipHasher.hashIp(ipAddress);
+            return shortLink.getPassword().equals(hashPassword(password + ipHash));
         }
         return false;
     }
