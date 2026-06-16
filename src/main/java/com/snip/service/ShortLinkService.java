@@ -224,4 +224,20 @@ public class ShortLinkService {
         }
         return false;
     }
+
+    /**
+     * Updates a short link in the database.
+     * @param shortLink the short link to update
+     * @return the updated short link
+     */
+    public ShortLink updateShortLinkDetails(ShortLink shortLink) {
+        ShortLink existingShortLink = getShortLinkById(shortLink.getId());
+        if (existingShortLink != null) {
+            existingShortLink.setUrl(shortLink.getUrl());
+            existingShortLink.setAlias(shortLink.getAlias());
+            existingShortLink.setPassword(shortLink.getPassword());
+            return shortLinkRepository.save(existingShortLink);
+        }
+        return null;
+    }
 }
