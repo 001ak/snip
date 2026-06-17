@@ -10,6 +10,9 @@ import com.snip.util.IpHasher;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.nio.charset.StandardCharsets;
+import com.snip.exception.AliasGenerationFailedException;
+import com.snip.exception.AliasAlreadyExistsException;
+import com.snip.constants.AppConstants;
 
 /**
  * Service class for managing short links.
@@ -239,5 +242,23 @@ public class ShortLinkService {
             return shortLinkRepository.save(existingShortLink);
         }
         return null;
+    }
+
+    /**
+     * Generates a custom alias for a short link.
+     * @param alias the custom alias to generate
+     * @return the generated custom alias
+     * @throws AliasGenerationFailedException if the alias length is invalid
+     * @throws AliasAlreadyExistsException if the alias already exists
+     */
+    public String generateCustomAlias(String alias) {
+        if (alias.length() < AppConstants.MIN_ALIAS_LENGTH || alias.length() > AppConstants.MAX_ALIAS_LENGTH) {
+            throw new AliasGenerationFailedException("Alias length must be between " + AppConstants.MIN_ALIAS_LENGTH + " and " + AppConstants.MAX_ALIAS_LENGTH + ".");
+        }
+        // Check if alias already exists
+        if (shortLinkRepository.findByAlias(alias) != null) {
+            throw new AliasAlreadyExistsException("Alias already exists.");
+        }
+        return alias;
     }
 }
