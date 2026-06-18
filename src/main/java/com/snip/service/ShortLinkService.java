@@ -261,4 +261,13 @@ public class ShortLinkService {
         }
         return alias;
     }
+
+    /**
+     * Retrieves a short link by its alias.
+     * @param alias the alias of the short link to retrieve
+     * @return the retrieved short link, or null if not found
+     */
+    public ShortLink getLinkDetailsByAlias(String alias) {
+        return shortLinkRepository.findByAlias(alias);
+    }
 }
