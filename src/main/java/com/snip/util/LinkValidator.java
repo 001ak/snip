@@ -3,6 +3,7 @@ package com.snip.util;
 import org.springframework.stereotype.Component;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import org.apache.commons.validator.routines.UrlValidator;
 
 /**
  * This class is responsible for validating links.
@@ -28,5 +29,17 @@ public class LinkValidator {
         
         // Check if the link matches the pattern
         return matcher.find();
+    }
+
+    /**
+     * Checks if a URL is reachable.
+     * 
+     * @param url the URL to be checked
+     * @return true if the URL is reachable, false otherwise
+     */
+    public boolean isUrlReachable(String url) {
+        String[] schemes = {"http", "https"};
+        UrlValidator validator = new UrlValidator(schemes);
+        return validator.isValid(url);
     }
 }
