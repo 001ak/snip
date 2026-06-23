@@ -33,4 +33,19 @@ public class ClickTracker {
     public long getClickCount() {
         return clickCount.get();
     }
+
+    /**
+     * Resets the click count to 0.
+     */
+    public void resetClickCount() {
+        clickCount.set(0);
+    }
+
+    /**
+     * Returns the total number of clicks recorded as a string.
+     * @return the total number of clicks as a string
+     */
+    public String getClickCountAsString() {
+        return String.valueOf(clickCount.get());
+    }
 }
