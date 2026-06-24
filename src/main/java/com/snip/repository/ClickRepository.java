@@ -1,6 +1,8 @@
 package com.snip.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.snip.entity.Click;
@@ -47,4 +49,13 @@ public interface ClickRepository extends CrudRepository<Click, Long> {
      */
     @Override
     Iterable<Click> findAll();
+
+    /**
+     * Finds all clicks by short link id.
+     * 
+     * @param shortLinkId the id of the short link to find clicks for
+     * @return a list of clicks for the given short link id
+     */
+    @Query("SELECT c FROM Click c WHERE c.shortLinkId = :shortLinkId")
+    List<Click> findClicksByShortLinkId(@Param("shortLinkId") Long shortLinkId);
 }
