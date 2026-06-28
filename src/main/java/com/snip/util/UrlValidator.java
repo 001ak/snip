@@ -56,4 +56,30 @@ public class UrlValidator {
             return false;
         }
     }
+
+    /**
+     * Checks if a given URL is reachable by sending a HEAD request with a timeout.
+     * 
+     * @param url the URL to be checked
+     * @param timeout the timeout in milliseconds
+     * @return true if the URL is reachable, false otherwise
+     */
+    public boolean isUrlReachableWithTimeout(String url, int timeout) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.setErrorHandler(new ResponseErrorHandler() {
+            @Override
+            public boolean hasError(ClientHttpResponse response) throws IOException {
+                return false;
+            }
+            @Override
+            public void handleError(ClientHttpResponse response) throws IOException {
+            }
+        });
+        try {
+            HttpStatus statusCode = restTemplate.headForHeaders(url).getStatusCode();
+            return statusCode.is2xxSuccessful();
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
