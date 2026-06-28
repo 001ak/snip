@@ -24,17 +24,13 @@ public class UserAgentParser {
      */
     public Map<String, String> parseUserAgent(String userAgent) {
         Map<String, String> info = new HashMap<>();
-        Pattern devicePattern = Pattern.compile(DEVICE_PATTERN);
+        info.put("device", parseDeviceType(userAgent));
         Pattern browserPattern = Pattern.compile(BROWSER_PATTERN);
         Pattern osPattern = Pattern.compile(OS_PATTERN);
 
-        Matcher deviceMatcher = devicePattern.matcher(userAgent);
         Matcher browserMatcher = browserPattern.matcher(userAgent);
         Matcher osMatcher = osPattern.matcher(userAgent);
 
-        if (deviceMatcher.find()) {
-            info.put("device", deviceMatcher.group());
-        }
         if (browserMatcher.find()) {
             info.put("browser", browserMatcher.group());
         }
@@ -42,5 +38,20 @@ public class UserAgentParser {
             info.put("os", osMatcher.group());
         }
         return info;
+    }
+
+    /**
+     * Parses a user agent string and returns the device type.
+     * 
+     * @param userAgent the user agent string to parse
+     * @return the device type
+     */
+    public String parseDeviceType(String userAgent) {
+        Pattern devicePattern = Pattern.compile(DEVICE_PATTERN);
+        Matcher deviceMatcher = devicePattern.matcher(userAgent);
+        if (deviceMatcher.find()) {
+            return deviceMatcher.group();
+        }
+        return "Unknown";
     }
 }
