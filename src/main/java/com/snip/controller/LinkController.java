@@ -137,4 +137,16 @@ public class LinkController {
         Link link = linkService.getLinkByAlias(alias);
         return new ResponseEntity<>(link, HttpStatus.OK);
     }
+
+    /**
+     * Retrieves a short link by its alias and returns the link details.
+     *
+     * @param alias the alias of the link to retrieve
+     * @return the retrieved link details
+     */
+    @GetMapping(value = "/{alias}/details", produces = "application/json")
+    public ResponseEntity<Link> getLinkDetails(@PathVariable String alias) {
+        Link link = linkService.getLinkByAlias(alias);
+        return new ResponseEntity<>(link, HttpStatus.OK);
+    }
 }
