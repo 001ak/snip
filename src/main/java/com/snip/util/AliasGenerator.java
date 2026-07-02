@@ -114,4 +114,22 @@ public class AliasGenerator {
         }
         return customAlias;
     }
+
+    /**
+     * Generates a custom base62 alias, checking if it's valid.
+     * 
+     * @param customAlias the custom alias to generate
+     * @return the custom alias if it's valid
+     */
+    public String generateCustomAlias(String customAlias) {
+        if (customAlias.length() < ALIAS_MIN_CUSTOM_LENGTH || customAlias.length() > ALIAS_MAX_CUSTOM_LENGTH) {
+            throw new IllegalArgumentException("Custom alias must be between " + ALIAS_MIN_CUSTOM_LENGTH + " and " + ALIAS_MAX_CUSTOM_LENGTH + " characters");
+        }
+        for (char c : customAlias.toCharArray()) {
+            if (!Character.isLetterOrDigit(c) && c != '-') {
+                throw new IllegalArgumentException("Custom alias can only contain letters, digits, and hyphens");
+            }
+        }
+        return customAlias;
+    }
 }
