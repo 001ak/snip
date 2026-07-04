@@ -62,4 +62,15 @@ public class AnalyticsService {
     public void deleteAnalytics(String id) {
         // TO DO: implement method
     }
+
+    /**
+     * Retrieves daily click statistics for a given link alias.
+     * 
+     * @param linkAlias the link alias
+     * @return the daily click statistics
+     */
+    public Object getDailyClickStatistics(String linkAlias) {
+        // TO DO: implement method
+        return null;
+    }
 }
