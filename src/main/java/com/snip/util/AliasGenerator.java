@@ -132,4 +132,14 @@ public class AliasGenerator {
         }
         return customAlias;
     }
+
+    /**
+     * Checks if a custom alias is valid.
+     * 
+     * @param alias the alias to check
+     * @return true if the alias is valid, false otherwise
+     */
+    public boolean isValidCustomAlias(String alias) {
+        return alias.length() >= ALIAS_MIN_CUSTOM_LENGTH && alias.length() <= ALIAS_MAX_CUSTOM_LENGTH && alias.matches("^[a-zA-Z0-9-]+$");
+    }
 }
