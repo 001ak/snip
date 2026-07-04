@@ -3,6 +3,7 @@ package com.snip.service;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service class for handling analytics queries.
@@ -70,6 +71,17 @@ public class AnalyticsService {
      * @return the daily click statistics
      */
     public Object getDailyClickStatistics(String linkAlias) {
+        // TO DO: implement method
+        return null;
+    }
+
+    /**
+     * Retrieves daily click statistics for a given link alias.
+     * 
+     * @param alias the link alias
+     * @return the daily click statistics
+     */
+    public Map<String, Object> getDailyClickStatistics(String alias) {
         // TO DO: implement method
         return null;
     }
