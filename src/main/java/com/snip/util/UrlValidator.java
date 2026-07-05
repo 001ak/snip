@@ -82,4 +82,20 @@ public class UrlValidator {
             return false;
         }
     }
+
+    /**
+     * Checks if a given URL is valid based on a list of reserved keywords.
+     * 
+     * @param url the URL to be validated
+     * @param reservedKeywords the list of reserved keywords
+     * @return true if the URL is valid, false otherwise
+     */
+    public boolean isValidUrlBasedOnReservedKeywords(String url, String[] reservedKeywords) {
+        for (String keyword : reservedKeywords) {
+            if (url.contains(keyword)) {
+                return false;
+            }
+        }
+        return isValidUrl(url);
+    }
 }
