@@ -36,4 +36,13 @@ public class ClickTrackingService {
         // Record click logic here
         clickTrackingRepository.saveClick(clickId);
     }
+
+    /**
+     * Handles click recording by calling the asynchronous method.
+     * 
+     * @param clickId the ID of the click to record
+     */
+    public void recordClick(String clickId) {
+        recordClickAsync(clickId);
+    }
 }
