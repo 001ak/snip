@@ -32,4 +32,13 @@ public interface ShortLinkRepository extends JpaRepository<ShortLink, Long> {
     @Override
     @Query("SELECT sl FROM ShortLink sl")
     List<ShortLink> findAll();
+
+    /**
+     * Finds a short link by its original URL.
+     * 
+     * @param originalUrl the original URL to search for
+     * @return the short link with the given original URL, or null if not found
+     */
+    @Query("SELECT sl FROM ShortLink sl WHERE sl.originalUrl = :originalUrl")
+    ShortLink findByOriginalUrl(@Param("originalUrl") String originalUrl);
 }
