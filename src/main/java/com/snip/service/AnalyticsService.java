@@ -4,12 +4,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import com.snip.repository.ClickRepository;
+import com.snip.model.Click;
 
 /**
  * Service class for handling analytics queries.
  */
 @Service
 public class AnalyticsService {
+
+    private final ClickRepository clickRepository;
+
+    public AnalyticsService(ClickRepository clickRepository) {
+        this.clickRepository = clickRepository;
+    }
 
     /**
      * Retrieves a list of all analytics data.
@@ -84,5 +94,22 @@ public class AnalyticsService {
     public Map<String, Object> getDailyClickStatistics(String alias) {
         // TO DO: implement method
         return null;
+    }
+
+    /**
+     * Retrieves daily click statistics for a given link id.
+     * 
+     * @param linkId the link id
+     * @return the daily click statistics
+     */
+    public Map<String, Long> getDailyClickStatistics(String linkId) {
+        // Retrieve click data from the database
+        List<Click> clicks = clickRepository.findByLinkId(linkId);
+        
+        // Group clicks by date and count
+        Map<String, Long> dailyClicks = clicks.stream()
+            .collect(Collectors.groupingBy(click -> click.getClickedAt().toLocalDate().toString(), Collectors.counting()));
+        
+        return dailyClicks;
     }
 }
