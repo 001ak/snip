@@ -70,4 +70,20 @@ public class UserAgentParser {
         }
         return parseDeviceType(userAgent);
     }
+
+    /**
+     * Parses a user agent string and returns the device type using an extended comprehensive list of known devices.
+     * 
+     * @param userAgent the user agent string to parse
+     * @return the device type
+     */
+    public String parseExtendedComprehensiveDeviceType(String userAgent) {
+        String[] extendedComprehensiveDevices = {"SmartTV", "Gaming Console", "Set-top Box", "Streaming Device"};
+        for (String device : extendedComprehensiveDevices) {
+            if (userAgent.contains(device)) {
+                return device;
+            }
+        }
+        return parseComprehensiveDeviceType(userAgent);
+    }
 }
