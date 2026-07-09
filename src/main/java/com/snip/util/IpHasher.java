@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 /**
  * Utility class for hashing IP addresses using SHA-256.
@@ -31,5 +32,21 @@ public class IpHasher {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("SHA-256 algorithm not found", e);
         }
+    }
+
+    /**
+     * Generates a random alphanumeric string of a specified length.
+     * 
+     * @param length the length of the salt string
+     * @return a random alphanumeric string
+     */
+    public String generateSalt(int length) {
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder salt = new StringBuilder(length);
+        Random random = new Random();
+        for (int i = 0; i < length; i++) {
+            salt.append(characters.charAt(random.nextInt(characters.length())));
+        }
+        return salt.toString();
     }
 }
