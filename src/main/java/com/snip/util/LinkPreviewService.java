@@ -20,14 +20,18 @@ public class LinkPreviewService {
      * @return a string array containing the title and description
      * @throws IOException if an I/O error occurs
      */
-    public String[] fetchOGMetadata(String url) throws IOException {
-        Document doc = Jsoup.connect(url).get();
-        Element titleElement = doc.selectFirst("meta[property='og:title']");
-        Element descriptionElement = doc.selectFirst("meta[property='og:description']");
+    public String[] fetchOGMetadata(String url) {
+        try {
+            Document doc = Jsoup.connect(url).get();
+            Element titleElement = doc.selectFirst("meta[property='og:title']");
+            Element descriptionElement = doc.selectFirst("meta[property='og:description']");
 
-        String title = titleElement != null ? titleElement.attr("content") : null;
-        String description = descriptionElement != null ? descriptionElement.attr("content") : null;
+            String title = titleElement != null ? titleElement.attr("content") : null;
+            String description = descriptionElement != null ? descriptionElement.attr("content") : null;
 
-        return new String[] { title, description };
+            return new String[] { title, description };
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to fetch Open Graph metadata", e);
+        }
     }
 }
