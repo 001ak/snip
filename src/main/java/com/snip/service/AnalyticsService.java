@@ -112,4 +112,37 @@ public class AnalyticsService {
         
         return dailyClicks;
     }
+
+    /**
+     * Retrieves daily click statistics for a given link alias.
+     * 
+     * @param alias the link alias
+     * @return the daily click statistics
+     */
+    public List<DailyStatsResponse> getDailyClickStats(String alias) {
+        List<Click> clicks = clickRepository.findByAlias(alias);
+        return clicks.stream()
+            .collect(Collectors.groupingBy(click -> click.getClickedAt().toLocalDate().toString()))
+            .entrySet().stream()
+            .map(entry -> new DailyStatsResponse(entry.getKey(), entry.getValue().size()))
+            .collect(Collectors.toList());
+    }
+}
+
+class DailyStatsResponse {
+    private String date;
+    private int count;
+
+    public DailyStatsResponse(String date, int count) {
+        this.date = date;
+        this.count = count;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public int getCount() {
+        return count;
+    }
 }
