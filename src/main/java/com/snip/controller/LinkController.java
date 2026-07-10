@@ -161,4 +161,16 @@ public class LinkController {
         Object analytics = linkService.getLinkAnalytics(alias);
         return new ResponseEntity<>(analytics, HttpStatus.OK);
     }
+
+    /**
+     * Retrieves analytics data for a short link by its alias.
+     *
+     * @param alias the alias of the link to retrieve analytics for
+     * @return the analytics data for the link
+     */
+    @GetMapping(value = "/api/v1/links/{alias}/analytics", produces = "application/json")
+    public ResponseEntity<Object> getLinkAnalyticsV1(@PathVariable String alias) {
+        Object analytics = linkService.getLinkAnalytics(alias);
+        return new ResponseEntity<>(analytics, HttpStatus.OK);
+    }
 }
